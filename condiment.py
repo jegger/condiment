@@ -47,7 +47,8 @@ class Iterator:
 
 
 class Parser(object):
-    def __init__(self, prefix='WITH_', input=None, output=None):
+    def __init__(self, prefix='WITH_', input=None, output=None,
+                 hide_block=False):
         object.__init__(self)
         self.prefix = prefix
         self.eval_dict = {}
@@ -55,6 +56,7 @@ class Parser(object):
         self.input = input
         self.output_name = None
         self.output_package = None
+        self.hide_block = hide_block
 
     def install(self):
 
@@ -93,15 +95,15 @@ class Parser(object):
         try:
             for index, line in self.parse(self.input):
                 fd.write(line.encode('utf-8'))
-
-            now = datetime.datetime.now()
-            fd.write(b'\n# ----- CONDIMENT VARIABLES -----\n')
-            fd.write('# Generated at {}\n'
-                     .format(now.strftime("%Y-%m-%d %H:%M"))
-                     .encode('utf-8'))
-            for key, value in self.eval_dict.items():
-                fd.write('# {} = {}\n'.format(key, value).encode('utf-8'))
-            fd.write(b'# ---------------------------------\n')
+            if not self.hide_block:
+                now = datetime.datetime.now()
+                fd.write(b'\n# ----- CONDIMENT VARIABLES -----\n')
+                fd.write('# Generated at {}\n'
+                         .format(now.strftime("%Y-%m-%d %H:%M"))
+                         .encode('utf-8'))
+                for key, value in self.eval_dict.items():
+                    fd.write('# {} = {}\n'.format(key, value).encode('utf-8'))
+                fd.write(b'# ---------------------------------\n')
         finally:
             if self.output is not sys.stdout:
                 fd.close()
@@ -241,10 +243,14 @@ def run():
     parser = argparse.ArgumentParser(
         description='Activate features depending of the environment.')
     parser.add_argument('input', metavar='source.py', nargs=1,
-        help='Source file to process')
+                        help='Source file to process')
+    parser.add_argument("--hideblock",
+                        help="Silent mode; do not add info block at end.",
+                        action="store_true")
 
     args = parser.parse_args()
-    Parser(input=args.input[0], output=sys.stdout).do()
+    Parser(input=args.input[0], output=sys.stdout,
+           hide_block=args.hideblock).do()
 
 
 if __name__ == '__main__':
