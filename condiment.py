@@ -48,7 +48,7 @@ class Iterator:
 
 class Parser(object):
     def __init__(self, prefix='WITH_', input=None, output=None,
-                 hide_block=False):
+                 force_inject=False, hide_block=False):
         object.__init__(self)
         self.prefix = prefix
         self.eval_dict = {}
@@ -56,6 +56,7 @@ class Parser(object):
         self.input = input
         self.output_name = None
         self.output_package = None
+        self.force_inject = force_inject
         self.hide_block = hide_block
 
     def install(self):
@@ -79,7 +80,7 @@ class Parser(object):
         self.do()
 
     def do(self):
-        if imp.lock_held() is True:
+        if imp.lock_held() is True or self.force_inject:
             # inject global variables instead of rewriting the file
             self.do_inject()
         else:
