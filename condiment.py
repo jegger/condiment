@@ -183,7 +183,7 @@ class Parser(object):
                 else:
                     self._state_strip_block(line)
 
-            elif sline == '#exclude':
+            elif sline == '# condiment-exclude':
                 self._read_exclude_block()
 
             else:
@@ -192,7 +192,7 @@ class Parser(object):
     def _read_exclude_block(self):
         for index, line in self.iterator:
             sline = line.strip()
-            if sline == '#endexclude':
+            if sline == '# condiment-endexclude':
                 break
 
     def _state_strip_block(self, line):

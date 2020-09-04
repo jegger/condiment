@@ -17,9 +17,9 @@ In python, you need to include condiment, and install it. You can put it in
 exclude block, in order to be removed during the offline preprocessing.
 
 ```python
-#exclude
+# condiment-exclude
 import condiment; condiment.install()
-#endexclude
+# condiment-endexclude
 
 class Player:
 
@@ -62,9 +62,9 @@ will be replaced during the generation. For example, a `WITH_LIFE` token could
 have the initial number of life.
 
 ```python
-#exclude
+# condiment-exclude
 import condiment; condiment.install()
-#endexclude
+# condiment-endexclude
 
 class Player:
 
