@@ -20,7 +20,7 @@ import datetime
 import inspect
 import ast
 import sys
-import imp
+import _imp as imp  # Very hacky, but it works for now (py 3.12 removed imp. It still is available as a private _imp)
 import re
 
 is_py3 = sys.version >= '3'
