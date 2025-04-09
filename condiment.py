@@ -20,7 +20,7 @@ import datetime
 import inspect
 import ast
 import sys
-import _imp as imp  # Very hacky, but it works for now (py 3.12 removed imp. It still is available as a private _imp)
+import importlib._bootstrap
 import re
 
 is_py3 = sys.version >= '3'
@@ -82,7 +82,7 @@ class Parser(object):
         self.do(run=True)
 
     def do(self, run=False):
-        if imp.lock_held() is True or self.force_inject:
+        if importlib._bootstrap._lock.locked() is True or self.force_inject:
             # inject global variables instead of rewriting the file
             self.do_inject()
         else:

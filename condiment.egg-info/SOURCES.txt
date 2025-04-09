@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+condiment.egg-info/PKG-INFO
+condiment.egg-info/SOURCES.txt
+condiment.egg-info/dependency_links.txt
+condiment.egg-info/not-zip-safe
+condiment.egg-info/top_level.txt
